@@ -1,11 +1,11 @@
 // routes/userRoutes.ts
 
 import express from "express";
-import { getAvailableItems, bookOrder } from "../controllers/userController";
+import { getAvailableItems, bookGroceryOrder } from "../controllers/userController";
 
 const router = express.Router();
 
 router.get("/items", getAvailableItems);
-router.post("/orders", bookOrder);
+router.post("/orders/book", bookGroceryOrder);
 
 export default router;

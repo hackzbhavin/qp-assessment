@@ -23,6 +23,8 @@ export const API_MESSAGES = {
   FAILED_TO_MANAGE_INVENTORY: "Failed to manage inventory",
   INVALID_ACTION: "Invalid action",
   DATA_FETCHED_SUCCESSFULLY: "Data fetched successfully",
+  FAILED_TO_BOOK_ORDER: "Failed to book order",
+  BOOKED_ORDER: "Order is created successfully",
 
   NOT_FOUND: "Route not found",
   INTERNAL_SERVER_ERROR: "Internal server error",

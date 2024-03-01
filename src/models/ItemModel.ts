@@ -8,6 +8,9 @@ export class ItemModel {
     this.connection = mysql.createConnection(dbConfig);
   }
 
+  // =================================================================
+  // ADD ITEM MODEL
+  // =================================================================
   addNewItem(
     itemData: any,
     adminId: number,
@@ -19,7 +22,7 @@ export class ItemModel {
       [Name, CurrencyId, Price, Quantity, adminId],
       (error: MysqlError | null, result: any) => {
         if (error) {
-        callback(error);
+          callback(error);
           return;
         }
 
@@ -30,6 +33,9 @@ export class ItemModel {
     );
   }
 
+  // =================================================================
+  // GET EXISTING ITEMS MODEL
+  // =================================================================
   getExistingItems(
     callback: (error: MysqlError | null, existingItems?: any[]) => void
   ) {
@@ -53,6 +59,9 @@ export class ItemModel {
     );
   }
 
+  // =================================================================
+  // REMOVE ITEM MODEL
+  // =================================================================
   removeItem(
     itemId: string,
     adminId: number,
@@ -81,6 +90,9 @@ export class ItemModel {
     );
   }
 
+  // =================================================================
+  // UPDATE ITEM MODEL
+  // =================================================================
   updateItem(
     itemId: string,
     itemData: any,
@@ -108,8 +120,11 @@ export class ItemModel {
     );
   }
 
+  // =================================================================
+  // MANAGE INVENTORY MODEL
+  // =================================================================
   manageInventory(
-    itemId: number,
+    itemId: string,
     action: "increase" | "decrease",
     amount: number,
     callback: (error: MysqlError | null, updatedInventory?: any) => void
@@ -122,8 +137,7 @@ export class ItemModel {
           callback(error);
           return;
         }
-        const updatedInventory = results[0][0]; // Assuming the stored procedure returns updated inventory data
-        callback(null, updatedInventory);
+        callback(null);
       }
     );
   }

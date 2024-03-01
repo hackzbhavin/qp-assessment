@@ -11,6 +11,10 @@ import { API_MESSAGES, HTTP_STATUS_CODES } from "../constant";
 const itemModel = new ItemModel();
 const adminId = 1;
 
+
+// =================================================================
+// ADD NEW ITEM 
+// =================================================================
 export const addNewItem = async (req: Request, res: Response) => {
   try {
     itemModel.addNewItem(req.body, adminId, (error, newItem) => {
@@ -29,7 +33,6 @@ export const addNewItem = async (req: Request, res: Response) => {
         message: API_MESSAGES.ITEM_ADDED_SUCCESSFULLY,
         data: newItem,
         statusCode: HTTP_STATUS_CODES.CREATED,
-        
       });
     });
   } catch (error) {
@@ -42,16 +45,19 @@ export const addNewItem = async (req: Request, res: Response) => {
   }
 };
 
+// =================================================================
+// GET EXISTING ITEMS
+// =================================================================
 export const getExistingItems = async (req: Request, res: Response) => {
   try {
     itemModel.getExistingItems((error, existingItems) => {
       if (error) {
-            sendFailureResponse({
-              res: res,
-              message: API_MESSAGES.FAILED_TO_FETCH_ITEMS,
-              error: error,
-              statusCode: HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-            });
+        sendFailureResponse({
+          res: res,
+          message: API_MESSAGES.FAILED_TO_FETCH_ITEMS,
+          error: error,
+          statusCode: HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+        });
         return;
       }
       sendSuccessResponse({
@@ -62,52 +68,54 @@ export const getExistingItems = async (req: Request, res: Response) => {
     });
   } catch (error) {
     if (error) {
-            sendFailureResponse({
-              res: res,
-              message: API_MESSAGES.FAILED_TO_FETCH_ITEMS,
-              error: error,
-              statusCode: HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-            });
-
-  }
-}
-}
-
-export const removeItem = async (req: Request, res: Response) => {
-  const itemId = String(req.params.itemId);
-  
-  try {
-    itemModel.removeItem(itemId,adminId, (error) => {
-
-      if (error) {
-             sendFailureResponse({
-               res: res,
-               message: API_MESSAGES?.FAILED_TO_REMOVE_ITEM,
-               statusCode: HTTP_STATUS_CODES?.INTERNAL_SERVER_ERROR,
-               error: { error: error },
-             });
-        return;
-      }
-
-
-         sendSuccessResponse({
-           res: res,
-           message: API_MESSAGES.ITEM_REMOVED_SUCCESSFULLY,
-           data: {},
-           statusCode: HTTP_STATUS_CODES.OK,
-         });
-
-    });
-  } catch (error) {
-  sendFailureResponse({
-    res: res,
-    message: API_MESSAGES?.FAILED_TO_REMOVE_ITEM,
-    statusCode: HTTP_STATUS_CODES?.INTERNAL_SERVER_ERROR,
-    error: { error: error },
-  });
+      sendFailureResponse({
+        res: res,
+        message: API_MESSAGES.FAILED_TO_FETCH_ITEMS,
+        error: error,
+        statusCode: HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+      });
+    }
   }
 };
 
+// =================================================================
+// REMOVE ITEM
+// =================================================================
+export const removeItem = async (req: Request, res: Response) => {
+  const itemId = String(req.params.itemId);
+
+  try {
+    itemModel.removeItem(itemId, adminId, (error) => {
+      if (error) {
+        sendFailureResponse({
+          res: res,
+          message: API_MESSAGES?.FAILED_TO_REMOVE_ITEM,
+          statusCode: HTTP_STATUS_CODES?.INTERNAL_SERVER_ERROR,
+          error: { error: error },
+        });
+        return;
+      }
+
+      sendSuccessResponse({
+        res: res,
+        message: API_MESSAGES.ITEM_REMOVED_SUCCESSFULLY,
+        data: {},
+        statusCode: HTTP_STATUS_CODES.OK,
+      });
+    });
+  } catch (error) {
+    sendFailureResponse({
+      res: res,
+      message: API_MESSAGES?.FAILED_TO_REMOVE_ITEM,
+      statusCode: HTTP_STATUS_CODES?.INTERNAL_SERVER_ERROR,
+      error: { error: error },
+    });
+  }
+};
+
+// =================================================================
+// UPDATE ITEM
+// =================================================================
 export const updateItem = async (req: Request, res: Response) => {
   const itemId = String(req.params.itemId);
   try {
@@ -138,8 +146,12 @@ export const updateItem = async (req: Request, res: Response) => {
   }
 };
 
+
+// =================================================================
+// MANAGE INVENTORY ITEM
+// =================================================================
 export const manageInventory = async (req: Request, res: Response) => {
-  const itemId = Number(req.params.itemId);
+  const itemId = String(req.params.itemId);
   const { action, amount } = req.body;
   try {
     itemModel.manageInventory(
@@ -148,25 +160,30 @@ export const manageInventory = async (req: Request, res: Response) => {
       amount,
       (error, updatedInventory) => {
         if (error) {
-          res.status(500).json({
-            success: false,
-            message: "Failed to manage inventory",
-            error: (error as Error).message,
+          sendFailureResponse({
+            res: res,
+            message: API_MESSAGES?.FAILED_TO_MANAGE_INVENTORY,
+            statusCode: HTTP_STATUS_CODES?.INTERNAL_SERVER_ERROR,
+            error: { error: error },
           });
+
           return;
         }
-        res.status(200).json({
-          success: true,
-          message: "Inventory managed successfully",
+
+        sendSuccessResponse({
+          res: res,
+          message: API_MESSAGES?.INVENTORY_MANAGED_SUCCESSFULLY,
+          statusCode: HTTP_STATUS_CODES?.OK,
           data: updatedInventory,
         });
       }
     );
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to manage inventory",
-      error: (error as Error).message,
+    sendFailureResponse({
+      res: res,
+      message: API_MESSAGES?.FAILED_TO_MANAGE_INVENTORY,
+      statusCode: HTTP_STATUS_CODES?.INTERNAL_SERVER_ERROR,
+      error: { error: error },
     });
   }
 };

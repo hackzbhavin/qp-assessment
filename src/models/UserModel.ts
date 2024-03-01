@@ -10,33 +10,57 @@ export class UserModel {
     this.connection = mysql.createConnection(dbConfig);
   }
 
+  // =================================================================
+  // GET ALL ITEM MODEL
+  // =================================================================
   getAvailableItems(
     callback: (error: MysqlError | null, items?: any[]) => void
   ) {
     this.connection.query(
-      "SELECT * FROM items WHERE quantity > 0",
-      (error: MysqlError | null, items: any[], fields) => {
+      "CALL GetItems()",
+      (error: MysqlError | null, results: any[][], fields) => {
         if (error) {
           callback(error);
           return;
         }
+        const items = results[0].map((row: any) => JSON.parse(row.Item));
         callback(null, items);
       }
     );
   }
 
-  bookOrder(
-    userId: number,
-    items: any[],
+  // =================================================================
+  // BOOK ORDER MODEL
+  // =================================================================
+  bookGroceryItems(
+    orderId: number,
+    itemDetails: any[],
     callback: (error: MysqlError | null) => void
   ) {
-    // Example order processing logic (to be replaced with actual implementation)
-    // Here you can insert orders into the database, update inventory, etc.
-    // For simplicity, let's just log the order information
-    console.log(`User ${userId} is booking the following items:`, items);
+    const values = itemDetails.map((item) => [
+      orderId,
+      item.ItemId,
+      item.Quantity,
+    ]);
 
-    // After processing the order, you can call the callback
-    // For simplicity, let's assume the order is successful
-    callback(null);
+    const totalItems = itemDetails.length;
+    let itemsProcessed = 0;
+
+    itemDetails.forEach((item) => {
+      this.connection.query(
+        "CALL BookGroceryItems(?, ?)",
+        [orderId, JSON.stringify(item)],
+        (error: MysqlError | null, result) => {
+          if (error) {
+            callback(error);
+            return;
+          }
+          itemsProcessed++;
+          if (itemsProcessed === totalItems) {
+            callback(null);
+          }
+        }
+      );
+    });
   }
 }

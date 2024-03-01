@@ -229,15 +229,42 @@ DELIMITER ;
 DELIMITER //
 DROP PROCEDURE IF EXISTS ManageInventory//
 CREATE PROCEDURE ManageInventory(
-    IN itemId INT,
+    IN itemId VARCHAR(50),
     IN action ENUM('increase', 'decrease'),
     IN amount INT
 )
 BEGIN
     IF action = 'increase' THEN
-        UPDATE items SET Quantity = Quantity + amount WHERE Id = itemId;
+        UPDATE items SET Quantity = Quantity + amount WHERE ShortEncryptItemId(Id) = itemId;
     ELSE
-        UPDATE items SET Quantity = Quantity - amount WHERE Id = itemId AND Quantity >= amount;
+        UPDATE items SET Quantity = Quantity - amount WHERE ShortEncryptItemId(Id) = itemId AND Quantity >= amount;
     END IF;
 END//
+DELIMITER ;
+
+-- =================================================================
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS GetItems//
+CREATE PROCEDURE GetItems()
+BEGIN
+    SELECT 
+        JSON_OBJECT(
+            'ItemId', ShortEncryptItemId(I.Id),
+            'Name', I.Name,
+            'Currency', JSON_OBJECT(
+                'Code', C.Code,
+                'Name', C.Name,
+                'Symbol', C.Symbol
+            ),
+            'Price', I.Price,
+            'Quantity', I.Quantity
+        ) AS Item
+    FROM items I
+    INNER JOIN currency C ON C.Id = I.CurrencyId
+    WHERE I.IsSoftDeleted = 0
+    AND I.IsActive = 1
+    ;
+END //
+
 DELIMITER ;
