@@ -50,6 +50,7 @@ INSERT INTO userdetails (UserId, FullName, PhoneNumber, Address) VALUES (1, 'Joh
 INSERT INTO userdetails (UserId, FullName, PhoneNumber, Address) VALUES (2, 'Rock', '1234567891', '121 Main Street');
 
 
+
 -- =================================================================
 
 DROP TABLE IF EXISTS currency;
@@ -91,6 +92,22 @@ VALUES
   ('Banana', 1, 0.75, 150, 1, 1);  -- Assuming CurrencyId 1 refers to INR and CreatedById 1 is an admin user
 
 
+
+-- =================================================================
+
+DROP TABLE IF EXISTS ordered_items;
+CREATE TABLE ordered_items (
+  Id INT AUTO_INCREMENT PRIMARY KEY,
+  OrderId VARCHAR(40),
+  ItemId INT,
+  Quantity INT NOT NULL,
+  IsSoftDeleted BOOLEAN DEFAULT false,
+   CreatedById INT NOT NULL,
+  CreatedOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (ItemId) REFERENCES items(Id),
+  FOREIGN KEY (CreatedById) REFERENCES users(UserId)
+);
+
 -- =================================================================
 -- =========================== USP ======================================
 -- =================================================================
@@ -131,7 +148,8 @@ BEGIN
         ) AS Item
     FROM items I
     INNER JOIN currency C ON C.Id = I.CurrencyId
-    WHERE I.IsSoftDeleted = 0;
+    WHERE I.IsSoftDeleted = 0
+    ORDER BY I.Name ASC;
 END //
 
 DELIMITER ;
@@ -250,7 +268,7 @@ CREATE PROCEDURE GetItems()
 BEGIN
     SELECT 
         JSON_OBJECT(
-            'ItemId', ShortEncryptItemId(I.Id),
+            'ItemId', I.Id,
             'Name', I.Name,
             'Currency', JSON_OBJECT(
                 'Code', C.Code,
@@ -264,7 +282,52 @@ BEGIN
     INNER JOIN currency C ON C.Id = I.CurrencyId
     WHERE I.IsSoftDeleted = 0
     AND I.IsActive = 1
+    ORDER BY I.Name ASC
     ;
 END //
 
 DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS BookGroceryItems//
+CREATE PROCEDURE BookGroceryItems(
+    IN p_OrderId VARCHAR(40),
+    IN p_UserId INT,
+    IN p_ItemId INT,
+    IN p_Quantity INT
+)
+BEGIN
+    INSERT INTO ordered_items (OrderId, ItemId, Quantity, CreatedById)
+    VALUES (p_OrderId, p_ItemId, p_Quantity, p_UserId);
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS GetOrderedItemsByUserId//
+CREATE PROCEDURE GetOrderedItemsByUserId(IN userId INT)
+BEGIN
+    SELECT 
+        JSON_OBJECT(
+            'OrderId', oi.OrderId,
+            'Item', JSON_OBJECT(
+                'ItemId', oi.ItemId,
+                'Name', i.Name,
+                'Price', i.Price,
+                'Quantity', oi.Quantity,
+                'CreatedOn', oi.CreatedOn
+            )
+        ) AS OrderedItem
+    FROM ordered_items oi
+    INNER JOIN items i ON oi.ItemId = i.Id
+    WHERE oi.CreatedById = userId;
+END //
+
+DELIMITER ;
+
+
+
+
+
+

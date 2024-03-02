@@ -1,6 +1,8 @@
+import { Config } from "../constant";
+
 module.exports = {
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "grocery",
+  host: Config.DB_HOST_NAME,
+  user: Config.DB_USER_NAME,
+  password: Config.DB_PASSWORD,
+  database: Config.DB_NAME,
 };

@@ -27,4 +27,5 @@ export const sendFailureResponse = ({
     message: message,
     error: error,
   });
+  return false;
 };

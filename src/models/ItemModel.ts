@@ -39,7 +39,6 @@ export class ItemModel {
   getExistingItems(
     callback: (error: MysqlError | null, existingItems?: any[]) => void
   ) {
-    // Call the stored procedure
     this.connection.query(
       "CALL GetExistingItems()",
       (error: MysqlError | null, results: any[][], fields) => {

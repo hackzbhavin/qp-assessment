@@ -1,6 +1,5 @@
-// UserModel.ts
-
 import mysql, { MysqlError } from "mysql";
+import { generateOrderId } from "../helpers/helper";
 const dbConfig = require("../config/dbConfig");
 
 export class UserModel {
@@ -33,34 +32,54 @@ export class UserModel {
   // BOOK ORDER MODEL
   // =================================================================
   bookGroceryItems(
-    orderId: number,
+    userId: number,
     itemDetails: any[],
     callback: (error: MysqlError | null) => void
   ) {
-    const values = itemDetails.map((item) => [
-      orderId,
-      item.ItemId,
-      item.Quantity,
-    ]);
-
-    const totalItems = itemDetails.length;
-    let itemsProcessed = 0;
+    let bookingId = generateOrderId(); 
 
     itemDetails.forEach((item) => {
       this.connection.query(
-        "CALL BookGroceryItems(?, ?)",
-        [orderId, JSON.stringify(item)],
+        "CALL BookGroceryItems(?, ?, ?, ?)",
+        [bookingId, userId, item.ItemId, item.Quantity],
         (error: MysqlError | null, result) => {
           if (error) {
+            console.log("Error:", error);
             callback(error);
-            return;
-          }
-          itemsProcessed++;
-          if (itemsProcessed === totalItems) {
-            callback(null);
           }
         }
       );
     });
+
+    callback(null);
+  }
+
+  // =================================================================
+  // GET ALL ITEM MODEL
+  // =================================================================
+
+  getOrderHistory(
+    userId: number,
+    callback: (error: MysqlError | null, existingItems?: any[]) => void
+  ) {
+    this.connection.query(
+      "CALL GetOrderedItemsByUserId(?)",
+      [userId],
+      (error: MysqlError | null, results: any[][], fields) => {
+        if (error) {
+          callback(error);
+          return;
+        }
+
+        const existingItems = results[0];
+      
+        const parsedExistingItems = existingItems.map((row: any) => {
+          const item = JSON.parse(row.OrderedItem);
+          return { Item: item.Items, OrderId: item.OrderId };
+        });
+
+        callback(null, parsedExistingItems);
+      }
+    );
   }
 }

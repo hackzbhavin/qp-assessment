@@ -1,13 +1,12 @@
-
 export const HTTP_STATUS_CODES = {
   OK: 200,
   CREATED: 201,
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
 };
-
-
 
 export const API_MESSAGES = {
   SUCCESS: "Success",
@@ -25,13 +24,44 @@ export const API_MESSAGES = {
   DATA_FETCHED_SUCCESSFULLY: "Data fetched successfully",
   FAILED_TO_BOOK_ORDER: "Failed to book order",
   BOOKED_ORDER: "Order is created successfully",
+  NOT_AUTH: "You are not authorized",
+  FORBIDDEN: "Forbidden",
 
   NOT_FOUND: "Route not found",
   INTERNAL_SERVER_ERROR: "Internal server error",
 };
 
+// KEYS
+export const API_KEY = {
+  SECRET: "GROCERY_KEY",
+};
 
-export const MSYQL_TABLES = {
+export const Config = {
+  DB_HOST_NAME: "localhost",
+  DB_USER_NAME: "root",
+  DB_PASSWORD: "root",
+  DB_NAME: "grocery",
+};
 
-  ITEMS:"items"
-}
+
+// Api Constants 
+export const API = "/api"
+export const ADMIN_API = "/api/admin";
+
+export const API_ENDPOINTS = {
+  CREATE_TOKEN: "/createToken",
+
+  // ADMIN
+  ADMIN_ADD_ITEM: "/items/add",
+  ADMIN_GET_ITEMS: "/items",
+  ADMIN_DELETE_ITEM: "/items/delete/:itemId",
+  ADMIN_UPDATE_ITEM: "/items/update/:itemId",
+  ADMIN_MANAGE_INVENTORY: "/items/:itemId/inventory",
+
+  // USERS
+  GET_ITEMS: "/items",
+  ADD_ORDER: "/orders/book",
+  GET_ORDERS_HISTORY: "/orders/history",
+};
+
+

@@ -1,12 +1,11 @@
-// userController.ts
-
 import { Request, Response } from "express";
 import { UserModel } from "../models/UserModel";
 import {
   sendFailureResponse,
   sendSuccessResponse,
 } from "../helpers/apiResponses";
-import { API_MESSAGES, HTTP_STATUS_CODES } from "../constant";
+import { API_KEY, API_MESSAGES, HTTP_STATUS_CODES } from "../constant";
+import { generateToken } from "../helpers/tokenService";
 
 const userModel = new UserModel();
 const userId = 1;
@@ -49,10 +48,10 @@ export const getAvailableItems = async (req: Request, res: Response) => {
 // BOOK GROCERY ORDER API
 // =================================================================
 export const bookGroceryOrder = async (req: Request, res: Response) => {
-  const { items } = req.body;
+  const { itemDetails } = req.body;
 
   try {
-    userModel.bookGroceryItems(userId, items, (error) => {
+    userModel.bookGroceryItems(userId, itemDetails, (error) => {
       if (error) {
         sendFailureResponse({
           res: res,
@@ -79,3 +78,66 @@ export const bookGroceryOrder = async (req: Request, res: Response) => {
     });
   }
 };
+
+
+// =================================================================
+// GET ALL ORDERS API
+// =================================================================
+export const getOrderHistory = async (req: Request, res: Response) => {
+  try {
+    userModel.getOrderHistory(userId,(error, availableItems) => {
+      if (error) {
+        sendFailureResponse({
+          res: res,
+          message: API_MESSAGES?.FAILED_TO_FETCH_ITEMS,
+          statusCode: HTTP_STATUS_CODES?.INTERNAL_SERVER_ERROR,
+          error: { error: error },
+        });
+        return;
+      }
+      sendSuccessResponse({
+        res: res,
+        message: API_MESSAGES?.DATA_FETCHED_SUCCESSFULLY,
+        statusCode: HTTP_STATUS_CODES?.OK,
+        data: availableItems,
+      });
+    });
+  } catch (error) {
+    sendFailureResponse({
+      res: res,
+      message: API_MESSAGES?.FAILED_TO_FETCH_ITEMS,
+      statusCode: HTTP_STATUS_CODES?.INTERNAL_SERVER_ERROR,
+      error: { error: error },
+    });
+  }
+};
+
+
+// =================================================================
+// Route for generating a token
+// =================================================================
+export const createToken = async (req: Request, res: Response) => {
+
+  const { secret } = req.body;
+  console.log("==============secret======================");
+  console.log(req);
+  console.log('====================================');
+
+  if (!secret || API_KEY?.SECRET !== secret) {
+    sendFailureResponse({
+      res: res,
+      message: API_MESSAGES?.INVALID_ACTION,
+      statusCode: HTTP_STATUS_CODES?.BAD_REQUEST,
+    });
+  }
+
+  const token = generateToken(secret);
+  sendSuccessResponse({
+    res: res,
+    message: API_MESSAGES?.SUCCESS,
+    data:{token:token},
+    statusCode: HTTP_STATUS_CODES?.OK,
+  });
+ 
+  return true
+}

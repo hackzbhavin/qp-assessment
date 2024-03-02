@@ -1,10 +1,18 @@
-import express from "express";
 import bodyParser from "body-parser";
 import adminRoutes from "./src/routes/adminRoutes";
 import userRoutes from "./src/routes/userRoutes";
-import { handle404Error, handleGenericError } from "./src/middleware/errorMiddleware";
+import tokenRoutes from "./src/routes/tokenRoutes";
+import {
+  handle404Error,
+  handleGenericError,
+} from "./src/middleware/errorMiddleware";
 import { requestLoggerMiddleware } from "./src/middleware/requestLoggerMiddleware";
-import mysql, { MysqlError } from "mysql"; // Import mysql and MysqlError types
+import mysql, { MysqlError } from "mysql";
+import { authenticateToken } from "./src/middleware/authMiddleware";
+import { generateToken } from "./src/helpers/tokenService";
+import express, { Request, Response } from "express";
+import { ADMIN_API, API, API_ENDPOINTS, API_KEY, API_MESSAGES, HTTP_STATUS_CODES } from "./src/constant";
+import { sendFailureResponse } from "./src/helpers/apiResponses";
 
 const app = express();
 const dbConfig = require("./src/config/dbConfig");
@@ -14,7 +22,6 @@ app.use(bodyParser.json());
 const connection = mysql.createConnection(dbConfig);
 
 connection.connect((err: MysqlError) => {
-  // Specify the type of 'err' as MysqlError
   if (err) {
     console.error("Error connecting to MySQL database: ", err);
     return;
@@ -23,16 +30,29 @@ connection.connect((err: MysqlError) => {
 });
 
 // =================================================================
-// Routes
-// =================================================================
-app.use("/api/admin", adminRoutes);
-app.use("/api", userRoutes);
-
-
-// =================================================================
-// Middleware for logging every request
+// Middleware for logging
 // =================================================================
 app.use(requestLoggerMiddleware);
+
+// =================================================================
+// Apply Token Authentication Middleware
+// =================================================================
+app.use(authenticateToken);
+
+// =================================================================
+// Routes
+// =================================================================
+
+
+// Protected Admin Routes
+app.use(ADMIN_API, adminRoutes);
+
+// Protected User Routes
+app.use(API, userRoutes);
+
+app.use(API, tokenRoutes);
+
+
 
 // =================================================================
 // 404 Error Middleware
@@ -43,6 +63,11 @@ app.use(handle404Error);
 // Error handling middleware
 // =================================================================
 app.use(handleGenericError);
+
+
+
+
+
 
 
 const PORT = process.env.PORT || 3000;

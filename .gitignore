@@ -1,1 +1,3 @@
 node_modules
+.request-log.txt
+package-lock.json
