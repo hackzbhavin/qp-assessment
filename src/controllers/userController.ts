@@ -119,9 +119,7 @@ export const getOrderHistory = async (req: Request, res: Response) => {
 export const createToken = async (req: Request, res: Response) => {
 
   const { secret } = req.body;
-  console.log("==============secret======================");
-  console.log(req);
-  console.log('====================================');
+
 
   if (!secret || API_KEY?.SECRET !== secret) {
     sendFailureResponse({

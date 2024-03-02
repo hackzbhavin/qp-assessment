@@ -44,7 +44,6 @@ export class UserModel {
         [bookingId, userId, item.ItemId, item.Quantity],
         (error: MysqlError | null, result) => {
           if (error) {
-            console.log("Error:", error);
             callback(error);
           }
         }

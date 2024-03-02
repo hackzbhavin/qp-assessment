@@ -21,12 +21,9 @@ const authenticateToken = (
 ) => {
   const authHeader: any = req.header("Authorization");
 
-  console.log(authHeader);
 
   if (req?.originalUrl == API + API_ENDPOINTS?.CREATE_TOKEN) {
-    console.log("============req?.originalUrl========================");
-    console.log(req?.originalUrl);
-    console.log("====================================");
+
     return next();
   }
 
@@ -55,7 +52,6 @@ const authenticateToken = (
 
   jwt.verify(token, API_KEY?.SECRET, (err: any, user: any) => {
     if (err) {
-      console.log(err);
       sendFailureResponse({
         res: res,
         data: err,

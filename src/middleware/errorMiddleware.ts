@@ -7,7 +7,6 @@ export const handle404Error = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("Path ", req?.path);
   
   sendFailureResponse({
     res: res,

@@ -66,7 +66,6 @@ export class ItemModel {
     adminId: number,
     callback: (error: MysqlError | null) => void
   ) {
-    console.log(itemId);
 
     this.connection.query(
       "CALL RemoveItem(?, ?)",
