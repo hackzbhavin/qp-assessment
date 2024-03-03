@@ -1,3 +1,6 @@
+# qp-assessment
+Node.js app for managing groceries: admins add/update/remove items, users view/order.
+
 
 ```markdown
 # qp-assessment
@@ -18,6 +21,7 @@ These instructions will help you set up and run the application locally using Do
 
    ```bash
    git clone https://github.com/hackzbhavin/qp-assessment.git
+   ```
    ```
 
 2. Navigate to the project directory:
