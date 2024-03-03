@@ -32,7 +32,7 @@ These instructions will help you set up and run the application locally using Do
 To build the Docker image, run the following command:
 
 ```bash
-docker build -t my-node-app .
+docker build -t qp-assessment .
 ```
 
 ### Running the Docker Container
@@ -40,7 +40,7 @@ docker build -t my-node-app .
 Once the Docker image is built, you can run a Docker container from this image:
 
 ```bash
-docker run -p 3000:3000 my-node-app
+docker run -p 3000:3000 qp-assessment
 ```
 
 The application should now be accessible at http://localhost:3000 in your web browser.
@@ -81,6 +81,7 @@ The application should now be accessible at http://localhost:3000 in your web br
 - Docker Version: 24.0.2
 - Node.js Version: Latest LTS
 - Database: grocery
+- PUBLIC REPO : https://hub.docker.com/r/hackzbhavin/assignments
 
 ## Authors
 
