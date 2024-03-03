@@ -1,3 +1,4 @@
+
 export const HTTP_STATUS_CODES = {
   OK: 200,
   CREATED: 201,
@@ -33,19 +34,18 @@ export const API_MESSAGES = {
 
 // KEYS
 export const API_KEY = {
-  SECRET: "GROCERY_KEY",
+  SECRET: process.env.API_SECRET,
 };
 
 export const Config = {
-  DB_HOST_NAME: "localhost",
-  DB_USER_NAME: "root",
-  DB_PASSWORD: "root",
-  DB_NAME: "grocery",
+  DB_HOST_NAME: process.env.DB_HOST_NAME,
+  DB_USER_NAME: process.env.DB_USER_NAME,
+  DB_PASSWORD: process.env.DB_PASSWORD,
+  DB_NAME: process.env.DB_NAME,
 };
 
-
-// Api Constants 
-export const API = "/api"
+// Api Constants
+export const API = "/api";
 export const ADMIN_API = "/api/admin";
 
 export const API_ENDPOINTS = {
@@ -63,5 +63,3 @@ export const API_ENDPOINTS = {
   ADD_ORDER: "/orders/book",
   GET_ORDERS_HISTORY: "/orders/history",
 };
-
-

@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "002745c2-c316-40e5-886d-56793ddb3701",
+		"name": "ASSIGNMENT_NODE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23579829",
+		"_collection_link": "https://galactic-resonance-508844.postman.co/workspace/My-Workspace~f1725ebc-7e44-4403-88fe-925b77b70274/collection/23579829-002745c2-c316-40e5-886d-56793ddb3701?action=share&source=collection_link&creator=23579829"
+	},
+	"item": [
+		{
+			"name": "ADMIN",
+			"item": [
+				{
+					"name": "GET ALL ITEMS",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{dev}}/api/admin/items"
+					},
+					"response": []
+				},
+				{
+					"name": "ADD NEW ITEM",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Name\": \"Banana\",\n  \"CurrencyId\": 1,\n  \"Price\": 10.99,\n  \"Quantity\": 100\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{dev}}/api/admin/items/add"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE ITEM",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Name\": \"Alphanso Mango\",\n//   \"CurrencyId\": 1,\n//   \"Price\": 10.99,\n  \"Quantity\": 10\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{dev}}/api/admin/items/update/eccbc87e4b5ce2fe28308fd9f2a7baf3"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ITEM",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{dev}}/api/admin/items/delete/c4ca4238a0b923820dcc509a6f75849b"
+					},
+					"response": []
+				},
+				{
+					"name": "MANAGE INVENTORY",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"increase\",\n    \"amount\": 6\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{dev}}/api/admin/items/c4ca4238a0b923820dcc509a6f75849b/inventory"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "USERS",
+			"item": [
+				{
+					"name": "GET ALL ITEMS",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "BOOK GROCERY ITEM",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"itemDetails\": [\n    {\n      \"ItemId\": \"eccbc87e4b5ce2fe28308fd9f2a7baf3\",\n      \"Quantity\": 1\n    },\n    {\n      \"ItemId\": \"c81e728d9d4c2f636f067f89cc14862c\",\n      \"Quantity\": 10\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{dev}}/api/orders/book"
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL BOOK HISTORY",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"secret\":\"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{dev}}/api/createToken"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWNyZXQiOiJHUk9DRVJZX0tFWSIsImlhdCI6MTcwOTM5MTkzMiwiZXhwIjoxNzA5Mzk1NTMyfQ.AZsAaDw244tSQqPzl523cVkD-2Ffx4U8R9N_0limTGw"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "dev",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}

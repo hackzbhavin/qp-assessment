@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import { sendFailureResponse } from "../helpers/apiResponses";
 import {
     API,
@@ -50,7 +50,7 @@ const authenticateToken = (
     return;
   }
 
-  jwt.verify(token, API_KEY?.SECRET, (err: any, user: any) => {
+  jwt.verify(token, API_KEY?.SECRET as Secret, (err: any, user: any) => {
     if (err) {
       sendFailureResponse({
         res: res,
