@@ -15,20 +15,22 @@ These instructions will help you set up and run the application locally using Do
 
 - Docker: [Installation Guide](https://docs.docker.com/get-docker/)
 
+
+```
+   
+
 ### Installing
 
 1. Clone the repository:
-
    ```bash
    git clone https://github.com/hackzbhavin/qp-assessment.git
    ```
-   ```
 
-2. Navigate to the project directory:
-
-   ```bash
+3. Navigate to the project directory:
+     ```bash
    cd qp-assessment
    ```
+   
 
 ### Building the Docker Image
 
@@ -61,19 +63,21 @@ The application should now be accessible at http://localhost:3000 in your web br
   - View the list of available grocery items
   - Ability to book multiple grocery items in a single order
 
+## Important
 - See database.sql for the SQL script to create tables and initial data.
   - Create a .env file in the root directory of the project and set the following variables
-  - `DB_HOST=localhost
+    ```
+     DB_HOST=localhost
      DB_USER=username
      DB_PASSWORD=password
      DB_NAME=database_name
-    `
+    ```
+  - Check important folder -> Includes postman collection of api and database sql file
 
 - Start the application:
-  - npm start
-
-- Check important folder
-  - Includes postman collection of api and database sql file
+   ```
+   npm start
+   ```
 
 - Logs
   - I also added request_logs.txt for storing logs of api in txt file you can check code in the project
@@ -93,6 +97,4 @@ The application should now be accessible at http://localhost:3000 in your web br
 - DOCKER REPO : https://hub.docker.com/r/hackzbhavin/qp-assesment
 - GITHUB REPO : https://github.com/hackzbhavin/qp-assessment      
 
-
-```
 
