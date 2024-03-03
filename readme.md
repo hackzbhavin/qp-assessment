@@ -88,7 +88,7 @@ The application should now be accessible at http://localhost:3000 in your web br
 
 ## Links
 - DOCKER REPO : https://hub.docker.com/r/hackzbhavin/qp-assesment
-- GITHUB REPO : https://github.com/hackzbhavin/qp-assessment
+- GITHUB REPO : https://github.com/hackzbhavin/qp-assessment      
 
 
 ```
