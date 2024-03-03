@@ -81,15 +81,15 @@ The application should now be accessible at http://localhost:3000 in your web br
 - Docker Version: 24.0.2
 - Node.js Version: Latest LTS
 - Database: grocery
-- PUBLIC REPO : https://hub.docker.com/r/hackzbhavin/assignments
 
-## Authors
+## Author
 
 - [Bhavin Patil](https://github.com/hackzbhavin)
 
-## Acknowledgments
+## Links
+- DOCKER REPO : https://hub.docker.com/r/hackzbhavin/qp-assesment
+- GITHUB REPO : https://github.com/hackzbhavin/qp-assessment
 
-- Mention any individuals or resources that you found helpful or inspirational.
 
 ```
 
