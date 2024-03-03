@@ -72,6 +72,9 @@ The application should now be accessible at http://localhost:3000 in your web br
 - Check important folder
   - Includes postman collection of api and database sql file
 
+- Logs
+  - I also added request_logs.txt for storing logs of api in txt file you can check code in the project
+  - src/middleware/requestLoggerMiddleware.ts includes the code its commented you can utilize 
 
 ## Additional Information
 
